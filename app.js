@@ -108,23 +108,37 @@ const dataReport = (dataLimit, day, usage)=>{
     let estUse = (cycleLength - day) *avgDailyUse
     let avgSuggestedUse = dataLimit / cycleLength
     let status
+    let feedback;
 
     if (avgDailyUse > avgSuggestedUse){
         status = "EXCEEDING"
-        feedback = 'exceed your data plan by <tbd> GB'
+        feedback = `exceed your data plan by ${estUse} GB`
     } else if(avgDailyUse <avgSuggestedUse){
         status = "UNDER"
         feedback = `lose ${estUse} GB`
     } else {
         status = "ON TRACK WITH"
-        feedback = "use all of your data"
+        feedback = "use all of your data."
     }
     //usage / day == average daily usage
     //dataLimit / cycleLength ==average daily usage without running over
     //((cycleLength - day) * (usage / day)) - dataLimit 
-    let output = `${day} day( s ) used, ${cycleLength - day} day( s ) remaining\n
-    Average daily use: ${avgDailyUse} GB/day
-    You are ${status} your average daily use (${avgDailyUse} GB/day),
-    continuing this high usage, you'll exceed your data plan by
-    <tbd> GB.
-    To stay below your data plan, use no more than <tbd> GB/day.`
+    let output = `${day} day( s ) used,
+     ${cycleLength - day} day( s ) remaining.\n Average daily use: ${avgDailyUse.toFixed(2)} GB/day.\n
+    You are ${status} your average daily use (${avgDailyUse.toFixed(2)} GB/day),
+    continuing this usage rate, you'll ${feedback} `
+
+    
+
+    if(status !== "ON TRACK WIITH"){
+      let correctedDailyUse = (dataLimit - usage) / (cycleLength - day)
+      output += `\nTo use all your data without exceeding your data plan, use no more than ${correctedDailyUse.toFixed(2)} GB/day.`
+    }
+
+    console.log(output);
+  }
+
+
+  dataReport(50, 5, 4)
+  dataReport(50, 15, 34)
+  dataReport(50, 15, 25)
