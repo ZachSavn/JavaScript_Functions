@@ -19,6 +19,7 @@ printOdds(0);
 console.log("EXERCISE 2:\n==========\n");
 
 function checkAge(userName, age) {
+  /* Prompting the user for their name and age. */
   do {
     userName = prompt("What is your name?");
   } while (userName == "" || userName == " ");
